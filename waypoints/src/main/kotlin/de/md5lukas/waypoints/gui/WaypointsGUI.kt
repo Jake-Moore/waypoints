@@ -11,13 +11,13 @@ import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.config.sounds.SoundsConfiguration
 import de.md5lukas.waypoints.gui.pages.*
 import de.md5lukas.waypoints.util.*
-import java.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.future.await
 import net.kyori.adventure.sound.Sound
 import net.wesjd.anvilgui.AnvilGUI
 import org.bukkit.Location
 import org.bukkit.entity.Player
+import java.util.*
 
 class WaypointsGUI(
     internal val plugin: WaypointsPlugin,
@@ -80,6 +80,22 @@ class WaypointsGUI(
     val page = SharedWaypointsPage(this).apply { init() }
     switchContext(SynchronizationContext.SYNC)
     open(page)
+  }
+
+  suspend fun openPublicHolder() {
+    val holder = plugin.api.publicWaypoints
+    val page = GUIFolderPage(this, holder).apply { init() }
+    switchContext(SynchronizationContext.SYNC)
+    open(page)
+  }
+
+  fun openPublicHolderAsync() {
+    skedule {
+      val holder = plugin.api.publicWaypoints
+      val page = GUIFolderPage(this@WaypointsGUI, holder).apply { init() }
+      switchContext(SynchronizationContext.SYNC)
+      open(page)
+    }
   }
 
   fun openCreateFolder(waypointHolder: WaypointHolder) {
