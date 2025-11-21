@@ -18,12 +18,13 @@ import net.wesjd.anvilgui.AnvilGUI
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import java.util.*
+import java.util.function.Consumer
 
 class WaypointsGUI(
-    internal val plugin: WaypointsPlugin,
-    internal val viewer: Player,
-    target: UUID,
-    openCallback: ((WaypointsGUI) -> Unit)? = null,
+  internal val plugin: WaypointsPlugin,
+  internal val viewer: Player,
+  target: UUID,
+  openCallback: Consumer<WaypointsGUI>? = null,
 ) {
 
   private val pageStack = ArrayDeque<BasePage>()
@@ -283,7 +284,7 @@ class WaypointsGUI(
       switchContext(SynchronizationContext.SYNC)
       playSound { openGui }
       gui.open()
-      openCallback?.invoke(this@WaypointsGUI)
+      openCallback?.accept(this@WaypointsGUI)
     }
   }
 }
