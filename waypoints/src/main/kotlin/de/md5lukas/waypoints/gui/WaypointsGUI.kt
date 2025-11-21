@@ -23,6 +23,7 @@ class WaypointsGUI(
     internal val plugin: WaypointsPlugin,
     internal val viewer: Player,
     target: UUID,
+    openCallback: ((WaypointsGUI) -> Unit)? = null,
 ) {
 
   private val pageStack = ArrayDeque<BasePage>()
@@ -282,6 +283,7 @@ class WaypointsGUI(
       switchContext(SynchronizationContext.SYNC)
       playSound { openGui }
       gui.open()
+      openCallback?.invoke(this@WaypointsGUI)
     }
   }
 }
